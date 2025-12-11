@@ -61,7 +61,7 @@ def main():
                 except ValueError as e:
                     print(f"{GREEN}Error: {e}{RESET}")
                     continue
-            elif is_valid_ip(item):  # Single IP
+            elif is_valid_ip(item):
                 ip_list.append(item)
             else:  # Domain name
                 resolved_ip = resolve_domain(item)
