@@ -3,7 +3,6 @@ import sys
 import threading
 import re
 
-# Bright White Color Code
 BRIGHT_WHITE = '\033[1;97m'
 RESET = '\033[0m'
 
@@ -15,13 +14,11 @@ def main():
         print(f'{BRIGHT_WHITE}[*] Starting TCP port scan on host {ip}{RESET}')
         threads = []
         
-        # Creating threads for each port
         for port in range(startPort, endPort + 1):
             thread = threading.Thread(target=tcp_scan, args=(ip, port))
             threads.append(thread)
             thread.start()
         
-        # Wait for all threads to finish
         for thread in threads:
             thread.join()
         
@@ -46,11 +43,9 @@ def main():
     def tcp_scan(ip, port):
         """ Creates a TCP socket and attempts to connect via a supplied port """
         try:
-            # Create a new socket
             tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            tcp.settimeout(1)  # Timeout for connection attempt
-            
-            # Print if the port is open
+            tcp.settimeout(1) 
+
             if not tcp.connect_ex((ip, port)):
                 print(f'{BRIGHT_WHITE}[+] {ip}:{port}/TCP Open{RESET}')
             tcp.close()
@@ -59,7 +54,6 @@ def main():
 
     def is_valid_ip(ip):
         """Validate the format of the given IP address"""
-        # Regular expression to validate an IP address
         ip_pattern = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$"
         return re.match(ip_pattern, ip) is not None
 
@@ -71,10 +65,8 @@ def main():
             return False
         return True
 
-    # Timeout in seconds
     socket.setdefaulttimeout(0.01)
 
-    # Input prompt for target IP and port range
     while True:
         target_ip = input(f"{BRIGHT_WHITE}Enter target IP (e.g., 192.168.100.102: {RESET}")
         if is_valid_ip(target_ip):
@@ -93,7 +85,6 @@ def main():
         except ValueError:
             print(f"{BRIGHT_WHITE}Error: Invalid port number. Please enter valid integers for port range.{RESET}")
 
-    # Scan the given host or range
     if '.' in target_ip:
         scanHost(target_ip, start_port, end_port)
     else:
